@@ -1,0 +1,9 @@
+---
+
+- name: User's fonts folder should exist
+  file: path={{ user.home }}/.fonts state=directory mode=0755
+
+- name: Fonts files should be installed
+  copy: src={{ item }} dest={{ user.home }}/.fonts/ mode=644
+  with_fileglob:
+    - "*.ttf"
