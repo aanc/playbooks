@@ -1,0 +1,4 @@
+{% if proxy is defined %}
+[Service]
+Environment="HTTP_PROXY=http://{% if proxy.user is defined %}{{ proxy.user}}:{{ proxy.password }}@{% endif %}{{ proxy.host }}:{{ proxy.port }}/" {% if proxy.no_proxy is defined %}"NO_PROXY={{ proxy.no_proxy }}"{% endif %}
+{% endif %}

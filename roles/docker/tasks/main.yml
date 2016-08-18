@@ -1,0 +1,46 @@
+---
+
+# Engine
+- name: Docker yum repo should be installed
+  become: yes
+  copy: src=docker.repo dest=/etc/yum.repos.d mode=644
+
+- name: Install Docker package
+  become: yes
+  dnf: name=docker-engine state=latest
+  notify:
+    - restart docker
+
+- name: A Docker group should exist
+  become: yes
+  group: name=docker state=present
+  tags: fast
+
+- name: Current user should belong to group Docker
+  become: yes
+  user: name="{{ user.name }}" groups=docker append=yes
+  tags: fast
+
+- name: Docker systemd droplet folder should exist
+  become: yes
+  file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
+
+- name: Proxy should be configured in Docker
+  become: yes
+  template: >
+    src=proxy.conf.j2
+    dest=/etc/systemd/system/docker.service.d/proxy.conf
+    mode=600
+  tags: proxy
+  notify:
+    - restart docker
+
+- name: Docker should be enabled
+  become: yes
+  service: name=docker enabled=yes
+
+# Compose
+# todo
+
+# Machine
+# todo
