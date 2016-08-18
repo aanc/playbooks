@@ -1,0 +1,28 @@
+---
+
+- name: Atom should be installed
+  become: yes
+  dnf: name=atom state=latest
+
+- name: APM should use proxy if needed
+  template: >
+    src=apmrc.j2
+    dest="{{ user.home }}/.atom/.apmrc"
+    owner="{{ user.name }}"
+    group="{{ user.name }}"
+  tags: proxy
+  when: proxy is defined
+
+- name: Asciidoctor need to be installed for preview package
+  become: yes
+  dnf: name=asciidoc state=latest
+
+- name: Atom packages should be installed
+  include: atom-one-package.yml
+  with_items:
+    - asciidoc-preview
+    - language-ansible
+    - language-groovy
+    - language-docker
+    - pretty-json
+    - tree-view-git-status

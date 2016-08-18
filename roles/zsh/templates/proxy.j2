@@ -1,0 +1,8 @@
+{% if proxy is defined %}
+export http_proxy=http://{% if proxy.user is defined %}{{ proxy.user }}:{{ proxy.password }}{% endif %}{{ proxy.host }}:{{ proxy.port }}
+export https_proxy=$http_proxy
+export HTTP_PROXY=$http_proxy
+export HTTPS_PROXY=$HTTP_PROXY
+
+export no_proxy={% if proxy.no_proxy is defined %}{{ proxy.no_proxy }}{% endif %}
+{% endif %}

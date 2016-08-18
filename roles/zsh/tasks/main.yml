@@ -1,0 +1,63 @@
+---
+
+- name: Proxy configuration file for ZSH env should exist
+  template: >
+    backup=yes
+    src=proxy.j2
+    dest={{ user.home }}/.proxy
+    owner={{ user.name }}
+    group={{ user.name }}
+    mode=600
+  tags: proxy
+
+- name: ZSH should be installed
+  become: yes
+  dnf: name=zsh state=latest
+
+- name: User's default shell should be ZSH
+  become: yes
+  user: name={{ user.name }} shell=/usr/bin/zsh state=present
+
+- name: Oh-My-Zsh should be installed
+  git: repo=https://github.com/robbyrussell/oh-my-zsh dest={{ user.home }}/.oh-my-zsh
+
+- name: Fuzzy Finder should be installed
+  git: repo=https://github.com/junegunn/fzf.git dest={{ user.home }}/.fzf
+
+- name: Fuzzy Finder should be configured
+  shell: "{{ user.home }}/.fzf/install --all"
+  changed_when: false
+
+- name: Autojump should be installed
+  become: yes
+  dnf: name=autojump-zsh state=latest
+
+- name: Custom ZSH theme should be installed
+  get_url: >
+    url=https://raw.githubusercontent.com/aanc/oh-my-zsh-nknu-theme/master/nknu.zsh-theme
+    dest={{ user.home }}/.oh-my-zsh/themes/nknu.zsh-theme
+
+- name: ZSH & shell config files should be present
+  template: >
+    backup=yes
+    src={{ item }}.j2
+    dest={{ user.home }}/.{{ item }}
+    owner={{ user.name }}
+    group={{ user.name }}
+    mode=600
+  with_items:
+    - zshrc
+    - myzshrc
+    - gitconfig
+
+# Alias file contains UTF-8 characters, and templates don't like them
+# see https://github.com/ansible/ansible/issues/11247
+# Using plain file copy instead
+- name: Alias file should be present
+  copy: >
+    backup=yes
+    src=aliases
+    dest={{ user.home }}/.aliases
+    owner={{ user.name }}
+    group={{ user.name }}
+    mode=600

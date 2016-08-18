@@ -1,0 +1,71 @@
+# Using C-x instead of C-b
+set -g prefix C-a
+set -g prefix2 C-q
+
+# Enlarge your scroll history
+set -g history-limit 50000
+
+# Change pane using alt+arrow/hjkl
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+bind -n M-h select-pane -L
+bind -n M-l select-pane -R
+bind -n M-k select-pane -U
+bind -n M-j select-pane -D
+
+# Disable status bar
+# set -g status off
+
+# VI mode
+setw -g mode-keys vi
+
+# ########## Copied from https://bitbucket.org/jasonwryan/
+#
+# Reload config without killing server
+bind R source-file ~/.tmux.conf \; display-message "  Config reloaded..".
+
+# Copy/paste vim style
+unbind [
+bind Escape copy-mode
+unbind p
+bind p paste-buffer
+bind-key -t vi-copy 'v' begin-selection
+bind-key -t vi-copy 'y' copy-selection
+
+# copy tmux buffer to clipboard
+bind C-y run "tmux show-buffer | xsel -b"
+# move x clipboard into tmux paste buffer
+bind C-p run "tmux set-buffer \"$(xsel -o)\"; tmux paste-buffer"
+
+# set correct term
+set -g default-terminal "screen-256color"
+set-option -g default-terminal "screen-256color"
+
+# Status Bar
+set-option -g status on		# Activate status bar
+set -g status-interval 5	# reduce update frequency to 5 sec
+set -g status-justify centre	# to the top !
+
+setw -g monitor-activity on	# Activity
+set -g visual-activity on
+
+set-option -g status-bg "#333333"
+set-option -g status-fg white
+
+# set window list colors
+set-window-option -g window-status-fg white
+set-window-option -g window-status-bg "#333333"
+
+set-window-option -g window-status-current-fg white
+set-window-option -g window-status-current-bg "#333333"
+set-window-option -g window-status-current-attr bright
+
+# left side of status bar
+set -g status-left-length 70
+set -g status-left "#[fg=blue,bold] #h #[fg=white,nobold]| #(ip a show eno1 | grep \"inet \" | awk '{print $2}') #(ifconfig en1 | grep 'inet ' | awk '{print \"en1 \" $2}') #[fg=red]#(ifconfig tun0 | grep 'inet ' | awk '{print \"vpn \" $2}') "
+
+# right side of status bar
+set -g status-right-length 60
+set -g status-right "#[fg=white,bold]Docker:#[fg=white,nobold] #(systemctl status docker | grep Active | awk '{print $2}' | sed -e "s/^active$/Started/" -e "s/^inactive$/Stopped/") #[fg=grey][#(docker ps -q 2>/dev/null | wc -l)] #[fg=white]| #[fg=blue]#S #I:#P #[fg=white]| %H:%M "

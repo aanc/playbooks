@@ -1,0 +1,37 @@
+---
+
+- hosts: 127.0.0.1
+  connection: local
+
+  vars:
+    # Proxy configuration.
+    # Delete whole block if proxy is not needed in your environment
+    proxy:
+      host: "my-corporate-proxy.local"
+      port: "3128"
+
+      # Delete the user and password lines if your proxy does not need auth
+      user: "bob"
+      password: "bim"
+
+      no_proxy: "127.0.0.1,localhost"
+
+    user:
+      name: bob
+      home: /home/bob
+      email: my-mail@example.local
+      full_name: Bob the Boat
+
+  # Ansible will possibly need the proxy too.
+  # Delete this bloc if you have direct access to the internet
+  environment:
+    http_proxy: "my-corporate-proxy.local:3128"
+    https_proxy: "my-corporate-proxy.local:3128"
+    no_proxy: "127.0.0.1,localhost"
+
+  roles:
+    - { role: base, tags: base }
+    - { role: zsh, tags: zsh }
+    - { role: tmux, tags: tmux }
+    - { role: vim, tags: vim }
+    - { role: atom, tags: atom }

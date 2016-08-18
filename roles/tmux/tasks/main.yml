@@ -1,0 +1,11 @@
+---
+
+- name: tmux should be installed
+  become: yes
+  dnf: name=tmux state=latest
+
+- name: tmux conf should be deployed
+  template: >
+    src=tmux.conf.j2
+    dest={{ user.home }}/.tmux.conf
+    mode=600

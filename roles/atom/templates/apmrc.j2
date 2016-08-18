@@ -1,0 +1,4 @@
+{% if proxy is defined %}
+proxy = "http://{% if proxy.user is defined %}{{ proxy.user }}:{{ proxy.password }}{% endif %}{{ proxy.host }}:{{ proxy.port }}"
+strict-ssl = false
+{% endif %}

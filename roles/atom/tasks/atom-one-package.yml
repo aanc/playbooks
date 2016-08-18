@@ -1,0 +1,8 @@
+- name: Check whether Atom package '{{item}}' is already installed
+  shell: "apm list -ip | grep '{{item}}@' | wc -l"
+  register: installed
+  changed_when: False
+
+- name: Atom package '{{item}}' should be installed
+  shell: "apm install {{item}}"
+  when: installed.stdout=="0"

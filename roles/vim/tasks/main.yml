@@ -1,0 +1,28 @@
+---
+
+- name: Vim should be installed
+  become: yes
+  dnf: name=vim state=latest
+
+- name: Vim config file should be deployed
+  template: >
+    src=vimrc.j2
+    dest={{ user.home }}/.vimrc
+    mode=644
+
+- name: Vim config directory should exist
+  file: path={{ user.home }}/.vim state=directory mode=0755
+
+- name: Pathogen should be installed
+  git: repo=https://github.com/tpope/vim-pathogen dest={{ user.home }}/.vim
+
+- name: Pathogen bundle directory should exist
+  file: path={{ user.home }}/.vim/bundle state=directory mode=0755
+
+- name: Bundles should be installed
+  git: repo={{ item.repo }} dest={{ user.home }}/.vim/bundle/{{ item.name }}
+  with_items:
+    - { name: lucius.vim, repo: "https://github.com/jonathanfilip/vim-lucius" }
+    - { name: nerdtree.vim, repo: "https://github.com/scrooloose/nerdtree.git" }
+    - { name: ctrlp.vim, repo: "https://github.com/ctrlpvim/ctrlp.vim" }
+    - { name: milticursor.vim, repo: "https://github.com/terryma/vim-multiple-cursors" }

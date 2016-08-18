@@ -1,0 +1,30 @@
+---
+
+- name: dnf should use proxy if needed
+  become: yes
+  template: >
+    backup=yes
+    src=dnf.conf.j2
+    dest=/etc/dnf/dnf.conf
+    owner=root
+    group=root
+  when: proxy is defined
+  tags: proxy
+
+- name: Basic packages should be installed
+  become: yes
+  dnf: name={{ item }} state=latest
+  with_items:
+    - ansible
+    - git
+    - htop
+    - kernel-devel
+    - libselinux-python
+    - python
+    - python-pip
+    - python2-dnf
+    - subversion
+    - the_silver_searcher
+    - tmux
+    - tree
+    - vim

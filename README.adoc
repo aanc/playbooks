@@ -1,0 +1,44 @@
+= My Playbooks
+
+Hi.
+You'll find here a set of Ansible roles I use to quickly configure servers and workstations.
+Here is how to use them.
+Ansible version > 2.0.
+
+== Quickstart
+
+You need to create a playbook that will use those roles.
+The playbook needs to provide the following variables for the roles:
+
+[source, yaml]
+
+  ---
+    vars:
+      # Proxy configuration.
+      # Delete whole block if proxy is not needed in your environment
+      proxy:
+        host: "my-corporate-proxy.local"
+        port: "3128"
+        no_proxy: "127.0.0.1,localhost"
+        user: bob
+        password: sup3rs3cr3t!
+      user:
+        name: bob
+        home: /home/bob
+        email: bob@boom.bim
+        full_name: Bob the Boat
+
+You can use `playbook-exemple.yml` as an example.
+
+You can see in the `.gitignore` file that `workstation-*.yml` and `server-*.yml` are ignored.
+That is because my playbooks are organized that way; `workstation-home.yml`, `workstation-work.yml`, `server-a.yml`, ...
+
+When your playbook is ready, run it with
+
+[source, shell]
+ansible-playbook my-workstation.yml -i hosts -K
+
+If you only need to reconfigure the proxy for all roles, you can use
+
+[source, shell]
+ansible-playbook my-workstation.yml -i hosts -K -t proxy

@@ -1,0 +1,120 @@
+# Colors
+RED="\\033[1;31m"
+GREEN="\\033[1;32m"
+YELLOW="\\033[1;33m"
+BLUE="\\033[1;34m"
+MAGENTA="\\033[1;35m"
+CYAN="\\033[1;36m"
+GRAS="\033[1m"
+END="\\033[1;00m"
+FATAL="\\033[1;37;41m" # While on red
+
+# System
+alias ll='ls -lhF'
+alias la='ls -A'
+alias l='ls -CF'
+alias c='clear'
+alias ip='ip -c'
+psg() { ps -ef | grep "$@" }
+
+# Packages
+alias get='sudo dnf install'
+alias search='dnf search'
+
+# Git
+alias gst='git status'
+alias gpr='git pull --rebase'
+alias grrh='git reset --hard HEAD'
+alias gcdf='git clean -df'
+alias gl='git lg | head -12'
+
+# vagrant
+alias vup='vagrant up'
+alias vssh='vagrant ssh'
+alias vzz='vagrant status'
+
+# docker
+alias dm='docker-machine'
+alias dc='docker-compose'
+dclean() {
+	echo "Cleaning exited containers:"
+	docker rm $(docker ps -qa --filter="status=exited" | xargs)
+
+	echo
+	echo "Cleaning untagged images"
+	docker rmi $(docker images | grep "<none>" | awk '{print $3}' | xargs)
+	echo
+}
+denv() {
+	[[ $1 != reset ]] \
+		&& eval $(docker-machine env $1) \
+		|| unset export DOCKER_TLS_VERIFY DOCKER_HOST DOCKER_CERT_PATH DOCKER_MACHINE_NAME
+
+}
+
+_denv() {
+	compadd $(docker-machine ls -q)
+}
+compdef _denv denv
+
+dip() {
+	[[ -z $1 ]] && echo "I need an argument" && return 1
+	if which jq &>/dev/null; then
+		docker inspect $1 | jq -r '.[].NetworkSettings.IPAddress'
+	else
+		docker inspect $1 | sed -e '/"IPAddress":/!d' -e 's/["|:|,]//g' -e "s/^[ ]*//g" -e "s/IPAddress //g"
+	fi
+}
+
+# Function allowing easy ssh'ing into containers exposing their port 22 (i know, ssh containers are evil)
+dssh() {
+	local sshPort=$(docker ps --format="{{.Ports}}" --filter="name=$1" 2>/dev/null | sed -r -e 's|.*:([0-9]*)->22/.*|\1|')
+	local username=$2
+
+	[[ -z $username ]] && echo "Please specify username: dssh <container> <username>" && return 1
+	[[ -z $sshPort ]] && echo "Could not determine which port to use for ssh connection" && return 1
+
+	ssh localhost -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $sshPort -l $username
+
+}
+
+dps() {
+	local awkFormat="%-25s %-25s %-25s"
+	local containerCount=0
+
+	docker ps $1 --format="{{.ID}}|{{.Image}}|{{.CreatedAt}}|{{.RunningFor}}|{{.Status}}|{{.Size}}|{{.Names}}|{{.Ports}}" \
+	| while IFS='|' read id image createdAt runningFor containerStatus size names ports
+	do
+		containerCount=$((containerCount + 1))
+		local statusColor=${RED}
+		[[ $containerStatus =~ ^Up ]] && statusColor=${GREEN}
+
+		echo -en " ${statusColor}$id${END}"
+		if [[ -n $names ]]; then
+			swarmNode=$(cut -d'/' -f1 <<< $names)
+			containerName=$(cut -d'/' -f2 <<< $names)
+			if [[ $swarmNode == $containerName ]]; then
+				echo -en "${GRAS} →  $names${END}"
+			else
+				echo -en "${GRAS} →  ${BLUE}$swarmNode/${END}${GRAS}$containerName${END}"
+			fi
+		fi
+		echo
+
+		echo -e "   ${GRAS}Image:${END} $image"
+		echo -e "   ${GRAS}Creation:${END} $createdAt"
+		echo -e "   ${GRAS}Status:${END} ${statusColor}$containerStatus${END}"
+		echo -e "   ${GRAS}Size:${END} $size"
+		if [[ -n $ports ]];  then
+			echo -e "   ${GRAS}Ports:${END} $(echo $ports | sed 's/0.0.0.0://g')"
+		fi
+		echo
+
+	done
+
+	echo " $containerCount containers."
+}
+
+alias ww="cd /home/{{ user.name }}/sandbox/w"
+alias pp="cd /home/{{ user.name }}/sandbox/p"
+alias gogo="cd $GOPATH"
