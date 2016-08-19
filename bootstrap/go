@@ -1,0 +1,52 @@
+# Use colors, but only if connected to a terminal, and that terminal
+# supports them.
+if which tput >/dev/null 2>&1; then
+    ncolors=$(tput colors)
+fi
+if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+  RED="$(tput setaf 1)"
+  GREEN="$(tput setaf 2)"
+  YELLOW="$(tput setaf 3)"
+  BLUE="$(tput setaf 4)"
+  BOLD="$(tput bold)"
+  NORMAL="$(tput sgr0)"
+else
+  RED=""
+  GREEN=""
+  YELLOW=""
+  BLUE=""
+  BOLD=""
+  NORMAL=""
+fi
+
+print_info() {
+  echo -e "${BLUE}[INFO]${NORMAL} $@"
+}
+
+print_next() {
+  echo -en "       $@"
+}
+
+main() {
+  set -e
+
+  print_info "Hi there ! Let's get started ..."
+
+  print_info "First, we need to check if dependencies are available :"
+
+  for tool in ansible python python2-dnf git; do
+    unset IS_INSTALLED
+    which $tool &>/dev/null && IS_INSTALLED=1
+    if [[ -n $IS_INSTALLED ]]; then
+      echo -e "           - $tool : ${GREEN}OK${NORMAL}"
+    else
+      echo -e "           - $tool : ${RED}KO${NORMAL}"
+    fi
+  done
+
+  echo
+  print_info "Now we need to do something about it, but later coz' i need to go work on other stuff"
+
+}
+
+main
