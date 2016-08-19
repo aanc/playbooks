@@ -18,6 +18,7 @@
     - ansible
     - git
     - htop
+    - jq
     - kernel-devel
     - libselinux-python
     - python
