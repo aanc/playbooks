@@ -1,8 +1,17 @@
 ---
 
 - name: Atom should be installed
+  stat: path=/usr/bin/atom
+  register: atom_installed
+
+- name: Download Atom's RPM package from atom.io
+  get_url: url=http://atom.io/download/rpm dest=/tmp/atom.rpm
+  when: atom_installed.stat.exists == false
+
+- name: Atom should be installed from atom.io's RPM package
   become: yes
-  dnf: name=atom state=latest
+  dnf: name=/tmp/atom.rpm state=present
+  when: atom_installed.stat.exists == false
 
 - name: APM should use proxy if needed
   template: >
@@ -13,7 +22,7 @@
   tags: proxy
   when: proxy is defined
 
-- name: Asciidoctor need to be installed for preview package
+- name: Asciidoc need to be installed for preview package
   become: yes
   dnf: name=asciidoc state=latest
 
