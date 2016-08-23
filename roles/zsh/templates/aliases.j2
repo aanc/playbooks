@@ -66,6 +66,7 @@ dip() {
 	fi
 }
 
+{% raw %}
 # Function allowing easy ssh'ing into containers exposing their port 22 (i know, ssh containers are evil)
 dssh() {
 	local sshPort=$(docker ps --format="{{.Ports}}" --filter="name=$1" 2>/dev/null | sed -r -e 's|.*:([0-9]*)->22/.*|\1|')
@@ -94,9 +95,9 @@ dps() {
 			swarmNode=$(cut -d'/' -f1 <<< $names)
 			containerName=$(cut -d'/' -f2 <<< $names)
 			if [[ $swarmNode == $containerName ]]; then
-				echo -en "${GRAS} →  $names${END}"
+				echo -en "${GRAS} : $names${END}"
 			else
-				echo -en "${GRAS} →  ${BLUE}$swarmNode/${END}${GRAS}$containerName${END}"
+				echo -en "${GRAS} : ${BLUE}$swarmNode/${END}${GRAS}$containerName${END}"
 			fi
 		fi
 		echo
@@ -114,6 +115,7 @@ dps() {
 
 	echo " $containerCount containers."
 }
+{% endraw %}
 
 alias ww="cd /home/{{ user.name }}/sandbox/w"
 alias pp="cd /home/{{ user.name }}/sandbox/p"

@@ -49,15 +49,5 @@
     - zshrc
     - myzshrc
     - gitconfig
+    - aliases
 
-# Alias file contains UTF-8 characters, and templates don't like them
-# see https://github.com/ansible/ansible/issues/11247
-# Using plain file copy instead
-- name: Alias file should be present
-  copy: >
-    backup=yes
-    src=aliases
-    dest={{ user.home }}/.aliases
-    owner={{ user.name }}
-    group={{ user.name }}
-    mode=600
