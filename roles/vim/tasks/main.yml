@@ -27,3 +27,6 @@
     - { name: ctrlp.vim, repo: "https://github.com/ctrlpvim/ctrlp.vim" }
     - { name: milticursor.vim, repo: "https://github.com/terryma/vim-multiple-cursors" }
     - { name: ansible.vim, repo: "https://github.com/pearofducks/ansible-vim" }
+    - { name: nerdtree-git.vim, repo: "https://github.com/Xuyuanp/nerdtree-git-plugin" }
+    - { name: gitgutter.vim, repo: "https://github.com/airblade/vim-gitgutter" }
+    - { name: editorconfig.vim, repo: "https://github.com/editorconfig/editorconfig-vim" }
