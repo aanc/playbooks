@@ -22,6 +22,7 @@
     - jq
     - kernel-devel
     - libselinux-python
+    - openssh-server
     - python
     - python-pip
     - python2-dnf
@@ -30,3 +31,9 @@
     - tmux
     - tree
     - vim
+
+- name: SSHD should be enabled
+  service:
+    name: sshd
+    state: started
+    enabled: yes
