@@ -35,3 +35,4 @@
     - language-docker
     - pretty-json
     - tree-view-git-status
+    - editorconfig
