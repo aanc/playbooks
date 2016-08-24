@@ -30,3 +30,4 @@
     - { name: nerdtree-git.vim, repo: "https://github.com/Xuyuanp/nerdtree-git-plugin" }
     - { name: gitgutter.vim, repo: "https://github.com/airblade/vim-gitgutter" }
     - { name: editorconfig.vim, repo: "https://github.com/editorconfig/editorconfig-vim" }
+    - { name: svngutter.vim, repo: "https://github.com/vim-scripts/vim-svngutter" }
