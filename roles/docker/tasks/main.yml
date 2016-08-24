@@ -1,11 +1,14 @@
 ---
 
+- set_fact: docker_compose_version="1.8.0"
+- set_fact: docker_machine_version="0.8.1"
+
 # Engine
 - name: Docker yum repo should be installed
   become: yes
   copy: src=docker.repo dest=/etc/yum.repos.d mode=644
 
-- name: Install Docker package
+- name: Docker package should be installed
   become: yes
   dnf: name=docker-engine state=latest
   notify:
@@ -40,7 +43,53 @@
   service: name=docker enabled=yes
 
 # Compose
-# todo
+- name: Docker Compose v{{ docker_compose_version }} should be installed
+  stat: path=/usr/bin/docker-compose-{{ docker_compose_version }}
+  register: compose_installed
+  changed_when: "compose_installed.stat.exists == false"
+
+- name: Docker Compose v{{ docker_compose_version }} should be downloaded from github
+  become: yes
+  get_url:
+    url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+    dest: /usr/bin/docker-compose-{{ docker_compose_version }}
+  when: compose_installed.stat.exists == false
+
+- name: Downloaded file should be executable
+  become: yes
+  file:
+    path: /usr/bin/docker-compose-{{ docker_compose_version }}
+    mode: 0755
+
+- name: Docker Compose symlink should point to v{{ docker_compose_version }}
+  become: yes
+  file:
+    src: /usr/bin/docker-compose-{{ docker_compose_version }}
+    dest: /usr/bin/docker-compose
+    state: link
 
 # Machine
-# todo
+- name: Docker Machine v{{ docker_machine_version }} should be installed
+  stat: path=/usr/bin/docker-machine-{{ docker_machine_version }}
+  register: machine_installed
+  changed_when: "machine_installed.stat.exists == false"
+
+- name: Docker Machine v{{ docker_machine_version }} should be downloaded from github
+  become: yes
+  get_url:
+    url: https://github.com/docker/machine/releases/download/v{{ docker_machine_version }}/docker-machine-Linux-x86_64
+    dest: /usr/bin/docker-machine-{{ docker_machine_version }}
+  when: machine_installed.stat.exists == false
+
+- name: Downloaded file should be executable
+  become: yes
+  file:
+    path: /usr/bin/docker-machine-{{ docker_machine_version }}
+    mode: 0755
+
+- name: Docker Machine symlink should point to v{{ docker_machine_version }}
+  become: yes
+  file:
+    src: /usr/bin/docker-machine-{{ docker_machine_version }}
+    dest: /usr/bin/docker-machine
+    state: link
