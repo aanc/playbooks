@@ -4,7 +4,7 @@
 	name = {{ user.full_name }}
 	email = {{ user.email }}
 [alias]
-	lg = log --pretty --format=\"%Cred%h %Creset%an %Cgreen(%ae)%Creset : %s %Cblue(%ar)\"
+	lg = log --graph --color --pretty=format:'%C(red)%h%Creset - %an %C(blue)(%ae)%Creset : %s %C(green)(%ar) %C(yellow)%D%Creset'
 	co = checkout
 [url "https://github.com/"]
 	insteadOf = git://github.com/
