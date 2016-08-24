@@ -16,6 +16,7 @@
   dnf: name={{ item }} state=latest
   with_items:
     - ansible
+    - aria2
     - git
     - htop
     - jq
