@@ -36,6 +36,7 @@
   get_url: >
     url=https://raw.githubusercontent.com/aanc/oh-my-zsh-nknu-theme/master/nknu.zsh-theme
     dest={{ user.home }}/.oh-my-zsh/themes/nknu.zsh-theme
+    force=yes
 
 - name: ZSH & shell config files should be present
   template: >
@@ -50,4 +51,3 @@
     - myzshrc
     - gitconfig
     - aliases
-
