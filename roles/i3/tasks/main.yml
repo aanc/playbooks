@@ -1,0 +1,60 @@
+---
+
+- name: i3 packages, dependencies and tools should be installed
+  become: yes
+  dnf: name={{ item }} state=latest
+  with_items:
+    - i3
+    - i3status
+    - dmenu
+    - i3lock
+    - xbacklight
+    - feh
+    - libxcb-devel
+    - xcb-util-keysyms-devel
+    - xcb-util-devel
+    - xcb-util-wm-devel
+    - yajl-devel
+    - libXrandr-devel
+    - startup-notification-devel
+    - libev-devel
+    - xcb-util-cursor-devel
+    - libXinerama-devel
+    - libxkbcommon-devel
+    - libxkbcommon-x11-devel
+    - pcre-devel
+    - pango-devel
+    - git
+    - gcc
+    - automake
+
+- name: i3 config folder should exist
+  file: path={{ user.home }}/.i3 state=directory
+
+- name: Tools repos should be cloned
+  git: >
+    repo={{ item.repo }}
+    dest={{ user.home }}/.i3/{{ item.name }}
+    recursive=yes
+  with_items:
+    - { name: i3blocks, repo: "https://github.com/vivien/i3blocks" }
+
+- name: Checking i3blocks install
+  stat: path=/usr/local/bin/i3blocks
+  register: i3blocks_installed
+
+- name: i3block should be built and installed
+  become: yes
+  make: chdir={{ user.home }}/.i3/i3blocks
+  with_items:
+    - clean
+    - all
+    - install
+  when: i3blocks_installed.stat.exists == false
+
+- name: Config files should be deployed
+  copy: >
+    src={{ item }}
+    dest={{ user.home }}/.i3
+  with_fileglob:
+    - config/*
