@@ -12,3 +12,20 @@ preexec() { print "" }
 
 # Remap caps lock to ctrl
 [[ -z $SSH_CONNECTION ]] && setxkbmap -option ctrl:nocaps
+
+# Detect existing tmux session
+if tmux list-sessions &>/dev/null; then
+	echo
+	echo -e "${BLUE}Following TMUX sessions are actives:${END}"
+	tmux list-sessions -F "#{session_name}" | sed "s/^/    - "/
+
+	echo
+	echo -en "${BLUE}Enter session ID to join, or [enter] to ignore : ${END}"
+	read sessionId
+	
+	if [[ -n $sessionId ]]; then
+		tmux attach -t $sessionId
+	else
+		echo "   ignoring ..."
+	fi
+fi
