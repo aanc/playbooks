@@ -17,7 +17,7 @@ preexec() { print "" }
 if [[ -z $TMUX ]] && tmux list-sessions &>/dev/null; then
 	echo
 	echo -e "${BLUE}Following TMUX sessions are actives:${END}"
-	tmux list-sessions -F "#{session_name}" | sed "s/^/    - "/
+	tmux list-sessions -F "#{session_name} (Windows: #{session_windows} / Clients: #{session_attached})" | sed "s/^/    - "/
 
 	echo
 	echo -en "${BLUE}Enter session ID to join, or [enter] to ignore : ${END}"
