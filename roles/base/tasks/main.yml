@@ -19,9 +19,11 @@
     - aria2
     - git
     - htop
+    - iftop
     - jq
     - kernel-devel
     - libselinux-python
+    - nmon
     - openssh-server
     - python
     - python-pip
