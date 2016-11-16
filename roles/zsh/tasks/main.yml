@@ -32,11 +32,15 @@
   become: yes
   dnf: name=autojump-zsh state=latest
 
+- name: Custom ZSH theme repo should be cloned
+  git: repo=https://github.com/aanc/oh-my-zsh-nknu-theme dest={{ user.home }}/.local/repo/oh-my-zsh-nknu-theme
+
 - name: Custom ZSH theme should be installed
-  get_url: >
-    url=https://raw.githubusercontent.com/aanc/oh-my-zsh-nknu-theme/master/nknu.zsh-theme
-    dest={{ user.home }}/.oh-my-zsh/themes/nknu.zsh-theme
-    force=yes
+  file: >
+    state=link
+    src={{ user.home }}/.local/repo/oh-my-zsh-nknu-theme/nknu.zsh-theme
+    path={{ user.home }}/.oh-my-zsh/themes/nknu.zsh-theme
+
 
 - name: ZSH & shell config files should be present
   template: >
