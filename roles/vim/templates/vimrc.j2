@@ -117,9 +117,3 @@ map <F7> gT " F7 is for previous tab
 autocmd BufNewFile,BufReadPost *.adoc set syntax=asciidoc
 autocmd BufNewFile,BufReadPost *.adoc set cc=80
 
-" Unbind the cursor keys in insert, normal and visual modes.
-for prefix in ['n', 'v']
-  for key in ['<Up>', '<Down>', '<Left>', '<Right>']
-    exe prefix . "noremap " . key . " <Nop>"
-  endfor
-endfor
