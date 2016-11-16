@@ -9,6 +9,9 @@
 # layout, use the i3-config-wizard
 #
 
+set $modKey Mod4
+set $supKey Mod1
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:Ubuntu Mono 10
@@ -66,78 +69,77 @@ set $right m
 floating_modifier Mod1
 
 # start a terminal
-bindsym Mod1+Return exec gnome-terminal
+bindsym $modKey+Return exec gnome-terminal
+bindsym $supKey+Return exec gnome-terminal
 
 # kill focused window
 bindsym Mod1+Shift+q kill
 bindsym Mod1+F4 kill
 
 # start dmenu (a program launcher)
-bindsym Mod1+d exec dmenu_run
+bindsym $modKey+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 #bindsym Mod1+d exec --no-startup-id i3-dmenu-desktopMod1+d
 # bindsym Mod1+d       exec rofi -show run
-bindsym Mod4+m       exec ~/sandbox/stuff/rofi-mods/rofi-meteo.sh
-bindsym Mod4+f       exec ~/sandbox/stuff/rofi-mods/rofi-browser-tabs.sh
 
 # change focus
-bindsym Mod1+$left focus left
-bindsym Mod1+$down focus down
-bindsym Mod1+$up focus up
-bindsym Mod1+$right focus right
+bindsym $modKey+$left focus left
+bindsym $modKey+$down focus down
+bindsym $modKey+$up focus up
+bindsym $modKey+$right focus right
 
 # alternatively, you can use the cursor keys:
-bindsym Mod1+Left focus left
-bindsym Mod1+Down focus down
-bindsym Mod1+Up focus up
-bindsym Mod1+Right focus right
+bindsym $modKey+Left focus left
+bindsym $modKey+Down focus down
+bindsym $modKey+Up focus up
+bindsym $modKey+Right focus right
 
 # move focused window
-bindsym Mod1+Shift+$left move left
-bindsym Mod1+Shift+$down move down
-bindsym Mod1+Shift+$up move up
-bindsym Mod1+Shift+$right move right
+bindsym $modKey+Shift+$left move left
+bindsym $modKey+Shift+$down move down
+bindsym $modKey+Shift+$up move up
+bindsym $modKey+Shift+$right move right
 
 # alternatively, you can use the cursor keys:
-bindsym Mod1+Shift+Left move left
-bindsym Mod1+Shift+Down move down
-bindsym Mod1+Shift+Up move up
-bindsym Mod1+Shift+Right move right
+bindsym $modKey+Shift+Left move left
+bindsym $modKey+Shift+Down move down
+bindsym $modKey+Shift+Up move up
+bindsym $modKey+Shift+Right move right
 
 # split in horizontal orientation
-bindsym Mod1+h split h
+bindsym $modKey+h split h
 
 # split in vertical orientation
-bindsym Mod1+v split v
+bindsym $modKey+v split v
 
 # enter fullscreen mode for the focused container
-bindsym Mod1+f fullscreen toggle
+bindsym $modKey+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym Mod1+s layout stacking
-bindsym Mod1+w layout tabbed
-bindsym Mod1+e layout toggle split
+bindsym $modKey+s layout stacking
+bindsym $modKey+w layout tabbed
+bindsym $modKey+e layout toggle split
 
 # toggle tiling / floating
-bindsym Mod1+Shift+space floating toggle
+bindsym $modKey+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym Mod1+space focus mode_toggle
+bindsym $modKey+space focus mode_toggle
 
 # focus the parent container
-bindsym Mod1+a focus parent
+bindsym $modKey+a focus parent
 
 # focus the child container
-#bindsym Mod1+d focus child
+#bindsym $modKey+d focus child
 
 # move the currently focused window to the scratchpad
-bindsym Mod1+Shift+minus move scratchpad
+bindsym $modKey+Shift+minus move scratchpad
 
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
-bindsym Mod1+minus scratchpad show
+bindsym $modKey+minus scratchpad show
 
 # workspace aliases
 set $w1 "1"
@@ -152,51 +154,50 @@ set $w9 "9"
 set $w10 "10"
 
 # switch to workspace
-bindsym Mod1+1 workspace $w1
-bindsym Mod1+2 workspace $w2
-bindsym Mod1+3 workspace $w3
-bindsym Mod1+4 workspace $w4
-bindsym Mod1+5 workspace $w5
-bindsym Mod1+6 workspace $w6
-bindsym Mod1+7 workspace $w7
-bindsym Mod1+8 workspace $w8
-bindsym Mod1+9 workspace $w9
-bindsym Mod1+0 workspace $w10
+bindsym $modKey+1 workspace $w1
+bindsym $modKey+2 workspace $w2
+bindsym $modKey+3 workspace $w3
+bindsym $modKey+4 workspace $w4
+bindsym $modKey+5 workspace $w5
+bindsym $modKey+6 workspace $w6
+bindsym $modKey+7 workspace $w7
+bindsym $modKey+8 workspace $w8
+bindsym $modKey+9 workspace $w9
+bindsym $modKey+0 workspace $w10
 
 # move focused container to workspace
-bindsym Mod1+Shift+1 move container to workspace $w1
-bindsym Mod1+Shift+2 move container to workspace $w2
-bindsym Mod1+Shift+3 move container to workspace $w3
-bindsym Mod1+Shift+4 move container to workspace $w4
-bindsym Mod1+Shift+5 move container to workspace $w5
-bindsym Mod1+Shift+6 move container to workspace $w6
-bindsym Mod1+Shift+7 move container to workspace $w7
-bindsym Mod1+Shift+8 move container to workspace $w8
-bindsym Mod1+Shift+9 move container to workspace $w9
-bindsym Mod1+Shift+0 move container to workspace $w10
+bindsym $modKey+Shift+1 move container to workspace $w1
+bindsym $modKey+Shift+2 move container to workspace $w2
+bindsym $modKey+Shift+3 move container to workspace $w3
+bindsym $modKey+Shift+4 move container to workspace $w4
+bindsym $modKey+Shift+5 move container to workspace $w5
+bindsym $modKey+Shift+6 move container to workspace $w6
+bindsym $modKey+Shift+7 move container to workspace $w7
+bindsym $modKey+Shift+8 move container to workspace $w8
+bindsym $modKey+Shift+9 move container to workspace $w9
+bindsym $modKey+Shift+0 move container to workspace $w10
 
 # Move workspace to next output
-bindsym Mod1+n move workspace to output right
+bindsym $modKey+n move workspace to output right
 
 # reload the configuration file
-bindsym Mod1+Shift+c reload
+bindsym $modKey+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym Mod1+Shift+r restart
+bindsym $modKey+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym Mod1+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $modKey+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Reconfigure screens
-bindsym Mod1+Shift+s exec $HOME/.i3/xrandr-config.sh
+bindsym $modKey+Shift+s exec $HOME/.i3/xrandr-config.sh
 
 # Lock screen
-bindsym Mod4+l exec i3lock -ec 000000
-
+bindsym $supKey+l exec i3lock -ec 000000
 # Rhytmbox
-bindsym Mod4+p exec mpc toggle
-bindsym Mod4+n exec mpc next
-bindsym Mod4+b exec mpc prev
-bindsym Mod4+a exec pactl set-sink-volume @DEFAULT_SINK@ "+5%" && pkill -RTMIN+10 i3blocks
-bindsym Mod4+q exec pactl set-sink-volume @DEFAULT_SINK@ "-5%" && pkill -RTMIN+10 i3blocks
+bindsym $supKey+p exec mpc toggle
+bindsym $supKey+n exec mpc next
+bindsym $supKey+b exec mpc prev
+bindsym $supKey+a exec pactl set-sink-volume @DEFAULT_SINK@ "+5%" && pkill -RTMIN+10 i3blocks
+bindsym $supKey+q exec pactl set-sink-volume @DEFAULT_SINK@ "-5%" && pkill -RTMIN+10 i3blocks
 
 # Screenshots
 bindsym Print exec scrot -e 'feh -x. $f' $HOME/Pictures/screenshots/screenshot-$(date +%F_%T).png
@@ -227,8 +228,7 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-bindsym Mod1+r mode "resize"
-
+bindsym $modKey+r mode "resize"
 
 
 # Start i3bar to display a workspace bar (plus the system information i3status
