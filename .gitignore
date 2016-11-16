@@ -1,3 +1,4 @@
 workstation-*.yml
 server-*.yml
 *.swp
+*.retry
