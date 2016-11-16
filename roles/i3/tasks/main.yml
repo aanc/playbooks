@@ -27,6 +27,7 @@
     - git
     - gcc
     - automake
+    - pcmanfm
 
 - name: i3 config folder should exist
   file: path={{ user.home }}/.i3 state=directory
