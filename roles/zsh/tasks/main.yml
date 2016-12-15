@@ -41,6 +41,8 @@
     src={{ user.home }}/.local/repo/oh-my-zsh-nknu-theme/nknu.zsh-theme
     path={{ user.home }}/.oh-my-zsh/themes/nknu.zsh-theme
 
+- name: ZSH syntax higlighting plugin should be installed
+  git: repo=https://github.com/zsh-users/zsh-syntax-highlighting dest={{ user.home }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 - name: ZSH & shell config files should be present
   template: >
