@@ -5,13 +5,15 @@
   dnf: name=vim state=latest
 
 - name: Vim config file should be deployed
-  template: >
-    src=vimrc.j2
-    dest={{ user.home }}/.vimrc
-    mode=644
+  template:
+    src: vimrc.j2
+    dest: "{{ user.home }}/.vimrc"
+    mode: 644
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
 
 - name: Vim config directory should exist
-  file: path={{ user.home }}/.vim state=directory mode=0755
+  file: path={{ user.home }}/.vim state=directory mode=0755 owner={{ user.name }} group={{ user.name }}
 
 - name: Pathogen should be installed
   git: repo=https://github.com/tpope/vim-pathogen dest={{ user.home }}/.vim
@@ -31,3 +33,12 @@
     - { name: gitgutter.vim, repo: "https://github.com/airblade/vim-gitgutter" }
     - { name: editorconfig.vim, repo: "https://github.com/editorconfig/editorconfig-vim" }
     - { name: svngutter.vim, repo: "https://github.com/vim-scripts/vim-svngutter" }
+
+- name: Everything under .vim should belong to {{ user.name }}
+  file:
+    path: "{{ user.home }}/.vim"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+

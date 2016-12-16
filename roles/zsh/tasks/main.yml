@@ -57,3 +57,17 @@
     - myzshrc
     - gitconfig
     - aliases
+
+- name: Directories .oh-my-zsh, .fzf and .local should be owned by {{ user.name }}
+  file: 
+    path: "{{ user.home }}/{{ item }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - .fzf
+    - .local
+    - .oh-my-zsh
+
+

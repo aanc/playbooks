@@ -5,7 +5,10 @@
   dnf: name=tmux state=latest
 
 - name: tmux conf should be deployed
-  template: >
-    src=tmux.conf.j2
-    dest={{ user.home }}/.tmux.conf
-    mode=600
+  template:
+    src: tmux.conf.j2
+    dest: "{{ user.home }}/.tmux.conf"
+    mode: "u=rw,g=r,o=r"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+
