@@ -42,3 +42,5 @@ If you only need to reconfigure the proxy for all roles, you can use
 
 [source, shell]
 ansible-playbook my-workstation.yml -i hosts -K -t proxy
+
+You will need python2 and python2-dnf installed on the target.
