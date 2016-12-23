@@ -28,6 +28,15 @@
   become: yes
   file: path=/etc/systemd/system/docker.service.d state=directory mode=0755
 
+- name: Docker storage engine should be overlayfs
+  become: yes
+  copy:
+    dest: /etc/systemd/system/docker.service.d/service.conf
+    src: systemd.conf
+    mode: 0644
+  notify:
+    - restart docker
+
 - name: Proxy should be configured in Docker
   become: yes
   template: >
