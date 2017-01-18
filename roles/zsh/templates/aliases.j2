@@ -80,41 +80,41 @@ dssh() {
 }
 
 dps() {
-	local awkFormat="%-25s %-25s %-25s"
-	local containerCount=0
+        local awkFormat="%-25s %-25s %-25s"
+        local containerCount=0
+        local termWidth=$(tput cols)
 
-	docker ps $1 --format="{{.ID}}|{{.Image}}|{{.CreatedAt}}|{{.RunningFor}}|{{.Status}}|{{.Size}}|{{.Names}}|{{.Ports}}" \
-	| while IFS='|' read id image createdAt runningFor containerStatus size names ports
-	do
-		containerCount=$((containerCount + 1))
-		local statusColor=${RED}
-		[[ $containerStatus =~ ^Up ]] && statusColor=${GREEN}
+        docker ps $1 --format="{{.ID}}|{{.Image}}|{{.CreatedAt}}|{{.RunningFor}}|{{.Status}}|{{.Size}}|{{.Names}}|{{.Ports}}" \
+        | while IFS='|' read id image createdAt runningFor containerStatus size names ports
+        do
+                containerCount=$((containerCount + 1))
+                local statusColor=${RED}
+                [[ $containerStatus =~ ^Up ]] && statusColor=${GREEN}
 
-		echo -en " ${statusColor}$id${END}"
-		if [[ -n $names ]]; then
-			swarmNode=$(cut -d'/' -f1 <<< $names)
-			containerName=$(cut -d'/' -f2 <<< $names)
-			if [[ $swarmNode == $containerName ]]; then
-				echo -en "${GRAS} : $names${END}"
-			else
-				echo -en "${GRAS} : ${BLUE}$swarmNode/${END}${GRAS}$containerName${END}"
-			fi
-		fi
-		echo
+                echo -en " ${statusColor}$id${END}"
+                if [[ -n $names ]]; then
+                        swarmNode=$(cut -d'/' -f1 <<< $names)
+                        containerName=$(cut -d'/' -f2 <<< $names)
+                        if [[ $swarmNode == $containerName ]]; then
+                                echo -en "${GRAS} : $names${END}"
+                        else
+                                echo -en "${GRAS} : ${BLUE}$swarmNode/${END}${GRAS}$containerName${END}"
+                        fi
+                fi
+                echo " [$image]"
 
-		echo -e "   ${GRAS}Image:${END} $image"
-		echo -e "   ${GRAS}Creation:${END} $createdAt"
-		echo -e "   ${GRAS}Status:${END} ${statusColor}$containerStatus${END}"
-		echo -e "   ${GRAS}Size:${END} $size"
-		if [[ -n $ports ]];  then
-			echo -e "   ${GRAS}Ports:${END} $(echo $ports | sed 's/0.0.0.0://g')"
-		fi
-		echo
+                echo -e "   ${GRAS}Status:${END} ${statusColor}$containerStatus${END}"
+                [[ $size != "0 B" ]] && echo -e "   ${GRAS}Size:${END} $size"
+                if [[ -n $ports ]];  then
+                        echo -e "   ${GRAS}Ports:${END} $(echo $ports | sed 's/0.0.0.0://g')"
+                fi
+                echo
 
-	done
+        done
 
-	echo " $containerCount containers."
+        echo " $containerCount containers."
 }
+
 {% endraw %}
 
 alias ww="cd /home/{{ user.name }}/sandbox/w"
