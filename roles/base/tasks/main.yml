@@ -46,6 +46,7 @@
     - libselinux-python
     - nmon
     - openssh-server
+    - psmisc
     - python
     - python-pip
     - python2-dnf
