@@ -28,4 +28,7 @@ if [[ -z $TMUX ]] && tmux list-sessions &>/dev/null; then
 	else
 		echo "   ignoring ..."
 	fi
+else
+	# Launch tmux if its installed
+	which tmux &>/dev/null && tmux
 fi
