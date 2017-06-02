@@ -1,25 +1,18 @@
 ---
 
 - name: Group wheel should exist
+  become: yes
   group:
     name: wheel
     state: present
 
 - name: Group wheel should be allowed to sudo
+  become: yes
   lineinfile:
     dest: /etc/sudoers
     state: present
     regexp: '^%wheel'
     line: "%wheel  ALL=(ALL)       ALL"
-
-- name: User {{ user.name }} should exist
-  become: yes
-  user:
-    name: "{{ user.name }}"
-    home: "{{ user.home }}"
-    password: "{{ user.password | password_hash('sha512') }}"
-    update_password: on_create
-    groups: wheel
 
 - name: dnf should use proxy if needed
   become: yes
