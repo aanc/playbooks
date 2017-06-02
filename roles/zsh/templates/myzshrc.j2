@@ -30,5 +30,5 @@ if [[ -z $TMUX ]] && tmux list-sessions &>/dev/null; then
 	fi
 else
 	# Launch tmux if its installed
-	[[ -z $TMUX ]] && which tmux &>/dev/null && tmux
+	[[ -z $TMUX ]] && which tmux &>/dev/null && exec tmux
 fi
