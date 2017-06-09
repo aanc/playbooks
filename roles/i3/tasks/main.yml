@@ -4,30 +4,36 @@
   become: yes
   dnf: name={{ item }} state=latest
   with_items:
-    - i3
-    - i3status
+    - automake
+    - cmake
     - dmenu
-    - i3lock
-    - xbacklight
     - feh
-    - libxcb-devel
-    - xcb-util-keysyms-devel
-    - xcb-util-devel
-    - xcb-util-wm-devel
-    - yajl-devel
-    - libXrandr-devel
-    - startup-notification-devel
+    - fontawesome-fonts
+    - gcc
+    - gcc-c++
+    - git
+    - i3
+    - i3lock
+    - i3status
     - libev-devel
-    - xcb-util-cursor-devel
+    - libxcb-devel
     - libXinerama-devel
     - libxkbcommon-devel
     - libxkbcommon-x11-devel
-    - pcre-devel
+    - libXrandr-devel
     - pango-devel
-    - git
-    - gcc
-    - automake
     - pcmanfm
+    - pcre-devel
+    - scrot
+    - startup-notification-devel
+    - xbacklight
+    - xcb-proto
+    - xcb-util-cursor-devel
+    - xcb-util-devel
+    - xcb-util-keysyms-devel
+    - xcb-util-wm-devel
+    - xcb-util-xrm-devel
+    - yajl-devel
 
 - name: i3 config folder should exist
   file: path={{ user.home }}/.i3 state=directory
@@ -39,6 +45,7 @@
     recursive=yes
   with_items:
     - { name: i3blocks, repo: "https://github.com/vivien/i3blocks" }
+    - { name: polybar, repo: "https://github.com/jaagr/polybar" }
 
 - name: Checking i3blocks install
   stat: path=/usr/local/bin/i3blocks
@@ -59,3 +66,11 @@
     dest={{ user.home }}/.i3
   with_fileglob:
     - config/*
+
+- name: i3 config files should belong to {{ user.name }}
+  file:
+    state: directory
+    recurse: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    path: "{{ user.home }}/.i3"
