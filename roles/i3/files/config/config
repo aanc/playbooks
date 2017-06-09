@@ -80,12 +80,13 @@ bindsym Mod1+Shift+q kill
 bindsym Mod1+F4 kill
 
 # start dmenu (a program launcher)
-bindsym $modKey+d exec dmenu_run
+#bindsym $modKey+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 #bindsym Mod1+d exec --no-startup-id i3-dmenu-desktopMod1+d
 # bindsym Mod1+d       exec rofi -show run
+bindsym $modKey+d exec "rofi -combi-modi window,drun,run -show combi -modi combi -lines 15 -font 'Dina 10' -padding 20px -eh 2px -width 45px -terminal 'termite'"
 
 # change focus
 bindsym $modKey+$left focus left
