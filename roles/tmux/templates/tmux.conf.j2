@@ -2,6 +2,9 @@
 set -g prefix C-a
 set -g prefix2 C-q
 
+# enabling mouse support
+setw -g mouse on
+
 # Enlarge your scroll history
 set -g history-limit 50000
 
@@ -24,15 +27,13 @@ setw -g mode-keys vi
 # ########## Copied from https://bitbucket.org/jasonwryan/
 #
 # Reload config without killing server
-bind R source-file ~/.tmux.conf \; display-message "  Config reloaded..".
+bind R source-file ~/.tmux.conf \; display-message "  Config reloaded.."
 
 # Copy/paste vim style
 unbind [
 bind Escape copy-mode
 unbind p
 bind p paste-buffer
-bind-key -t vi-copy 'v' begin-selection
-bind-key -t vi-copy 'y' copy-selection
 
 # copy tmux buffer to clipboard
 bind C-y run "tmux show-buffer | xsel -b"
@@ -55,12 +56,8 @@ set-option -g status-bg "#333333"
 set-option -g status-fg white
 
 # set window list colors
-set-window-option -g window-status-fg white
-set-window-option -g window-status-bg "#333333"
-
-set-window-option -g window-status-current-fg white
-set-window-option -g window-status-current-bg "#333333"
-set-window-option -g window-status-current-attr bright
+set-window-option -g window-status-format "#[fg=white,bg=#333333] #I:#W #[default]"
+set-window-option -g window-status-current-format "#[fg=white,bg=#333333,bright] #I:#W #[default]"
 
 # left side of status bar
 set -g status-left-length 70
